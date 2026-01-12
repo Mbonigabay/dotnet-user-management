@@ -1,39 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace user_management_api.model
 {
+    [Index(nameof(UserName), IsUnique = true)]
     public class User
     {
-        private string firstName;
-        private string lastName;
-        private string email;
-        private string userName;
+        [Key]
+        public Guid Id { get; set; }
 
-        public string FirstName
-        {
-            get { return firstName; }
-            set { firstName = value; }
-        }
+        public string? FirstName { get; set; } = null!;
 
-        public string LastName
-        {
-            get { return lastName; }
-            set { lastName = value; }
-        }
+        public string? LastName { get; set; } = null!;
 
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string Email { get; set; } = null!;
 
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; }
-        }
+        
+        [Required(ErrorMessage = "UserName is required")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "UserName must be between 3 and 50 characters")]
+        public string UserName { get; set; } = null!;
+
+        public string PasswordHash { get; set; } = null!;
     }
 }
